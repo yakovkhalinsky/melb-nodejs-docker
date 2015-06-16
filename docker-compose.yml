@@ -1,0 +1,21 @@
+cow:
+    image: russianator/node-hello-world-cache
+    expose:
+        - "10001"
+sheep:
+    image: russianator/node-hello-world
+    expose:
+        - "10000"
+    links:
+        - cow
+    environment:
+        API_HOST: "http://cow"
+herder:
+    image: tutum/haproxy
+    ports:
+        - "10000:10000"
+    links:
+        - sheep
+    environment:
+        BACKEND_PORT: 10000
+        FRONTEND_PORT: 10000
